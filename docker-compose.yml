@@ -1,0 +1,37 @@
+version: '3'
+services:
+    nginx-parser:
+        image: nginx:latest
+        container_name: nginx-parser
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./hosts:/etc/nginx/conf.d
+            - ./www:/var/www
+            - ./logs:/var/log/nginx
+        depends_on:
+            - php-parser
+    php-parser:
+        build: ./images/php
+        container_name: php-parser
+        depends_on:
+            - mysql-parser
+        volumes:
+            - ./www:/var/www
+            - ./config:/usr/local/etc/php/conf.d
+    mysql-parser:
+        image: mysql:8
+        command: --default-authentication-plugin=mysql_native_password
+        container_name: mysql-parser
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root_q0we99gh8ffgjujw_terr2
+            - MYSQL_HOST=localhost
+            - MYSQL_PORT=33306
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=_admin_123qwe++
+            - MYSQL_DATABASE=db_parser
